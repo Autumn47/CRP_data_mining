@@ -14,7 +14,7 @@ while(go_on == True):
 
 #define variables
         Cysteine_amount = 6
-        max_length = 40
+        max_length =  40
         data = []
         combined = ""
         new_data = []
@@ -29,40 +29,29 @@ while(go_on == True):
             combined = combined.replace("-","")
             pyperclip.copy(combined)
 
-#Slicing data into max length for CRP in a frameshift manner
+#Slicing data into max length for CRP in a frameshift manner, append the whole input sequence if the length of input sequence is less than max_length
         for i in range(len(combined) - max_length):
             if len(combined[i:i+max_length]) == max_length:
                 new_data.append(combined[i:i+max_length])
+        if len(new_data) == 0:
+            new_data.append(combined)
+
+#Check first letter for "C" and check for last item in list (because the start may not start with C), then iterate the list, append to list if cysteine counted reached var Cysteine_amount 
         for i in new_data:
             count = 0
             distance = 0
+            first_C = 0
 
-#Check first letter for "C" and iterate the list, append to list if cysteine counted reached var Cysteine_amount 
-            if i[0] == "C":
+            if i[0] == "C" or i == new_data[-1]:
                 for j in i:
-                    distance += 1   
+                    distance += 1
                     if j == "C":
                         count += 1
                         if count == Cysteine_amount:
                             if i not in arranged:
-                                arranged.append(i[0:distance])
-
-#Check for last item in list (because the start may not start with C)
-            if i == new_data[-1]:
-                count = 0
-                distance = 0
-                for j in i:
-                    distance += 1   
-                    if j == "C":
-                        if count == 0:
-                            first = i.index(j)
-                        count += 1
-                        if count == Cysteine_amount:
-                            if i not in arranged:
-                                arranged.append(i[first:distance])
-                                
+                                first_C = i.find("C")
+                                arranged.append(i[first_C:distance])              
         return(arranged)
-    
 
 #Run Search()
     arranged = Search()
