@@ -21,7 +21,7 @@ while(go_on == True):
         arranged = []
 
 #Clean up data into a string: accept sequences containing new lines, whitespaces, "-", then copy the cleaned data onto clipboard
-        data.append(input(""))
+        data.append(input("Enter sequence to check: \n"))
         for i in data :
             combined += str(i)
             combined = combined.replace("\n","")
